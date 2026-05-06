@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ─── Segurança ────────────────────────────────────────────────────────────────
 SECRET_KEY = config(
     'SECRET_KEY',
-    default=''
+    default='django-insecure-troque-esta-chave-em-producao-!@#$%^&*()'
 )
 
 DEBUG = config('DEBUG', default=False, cast=bool)
