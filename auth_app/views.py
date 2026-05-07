@@ -5,7 +5,50 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Usuario
-from .serializers import LoginSerializer, UsuarioSerializer
+from .serializers import LoginSerializer, RegisterSerializer, UsuarioSerializer
+
+
+def gerar_token(usuario):
+    return signing.dumps({
+        'id': usuario.id,
+        'email': usuario.email,
+        'tipo': usuario.tipo,
+    })
+
+
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(
+                {'erros': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        nome = serializer.validated_data['nome']
+        email = serializer.validated_data['email']
+        senha = serializer.validated_data['senha']
+
+        usuario = Usuario.objects.create(
+            nome=nome,
+            email=email,
+            senha=senha,
+            tipo='comum',
+        )
+
+        token = gerar_token(usuario)
+
+        return Response(
+            {
+                'mensagem': 'Cadastro realizado com sucesso.',
+                'token': token,
+                'usuario': UsuarioSerializer(usuario).data,
+            },
+            status=status.HTTP_201_CREATED
+        )
 
 
 class LoginView(APIView):
@@ -31,19 +74,13 @@ class LoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        # Atenção: isso compara senha em texto puro.
-        # Funciona se a tabela Usuario estiver salvando senha normal.
         if usuario.senha != senha:
             return Response(
                 {'erro': 'Email ou senha inválidos.'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        token = signing.dumps({
-            'id': usuario.id,
-            'email': usuario.email,
-            'tipo': usuario.tipo,
-        })
+        token = gerar_token(usuario)
 
         return Response(
             {

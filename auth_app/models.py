@@ -12,7 +12,7 @@ class Usuario(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     senha = models.CharField(max_length=100)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='comum')
-    data_criacao = models.DateTimeField()
+    data_criacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'Usuario'
