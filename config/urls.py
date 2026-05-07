@@ -1,8 +1,10 @@
-"""Configuração de URLs principal do projeto django-auth-backend."""
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+
+from .views import LoginView, ProfileView, RegisterView
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/auth/', include('auth_app.urls')),
+    path('register/', RegisterView.as_view(), name='auth-register'),
+    path('login/', LoginView.as_view(), name='auth-login'),
+    path('profile/', ProfileView.as_view(), name='auth-profile'),
 ]
