@@ -131,8 +131,6 @@ class ProfileView(APIView):
             )
 
         return Response(
-            {
-                "usuario": UsuarioSerializer(usuario).data
-            },
+            {"usuario": UsuarioSerializer(usuario).data},
             status=status.HTTP_200_OK
         )
