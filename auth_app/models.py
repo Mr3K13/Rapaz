@@ -3,19 +3,21 @@ from django.db import models
 
 class Usuario(models.Model):
     TIPO_CHOICES = [
-        ('comum', 'Comum'),
-        ('moderador', 'Moderador'),
+        ("crianca", "Criança"),
+        ("ong", "ONG"),
+        ("comum", "Comum"),
+        ("moderador", "Moderador"),
     ]
 
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     senha = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='comum')
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default="crianca")
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'Usuario'
+        db_table = "Usuario"
         managed = False
 
     def __str__(self):
