@@ -102,12 +102,12 @@ REST_FRAMEWORK = {
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://adocao-projeto.vercel.app",
+    "https://rede-afeto.vercel.app",
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://adocao-projeto.vercel.app",
+    "https://rede-afeto.vercel.app",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
