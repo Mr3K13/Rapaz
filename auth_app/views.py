@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .models import Usuario
 from .serializers import LoginSerializer, RegisterSerializer, UsuarioSerializer
 
+logger = logging.getLogger(__name__)
 
 def gerar_token(usuario):
     return signing.dumps({
@@ -28,12 +29,23 @@ class RegisterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        usuario = Usuario.objects.create(
-            nome=serializer.validated_data["nome"],
-            email=serializer.validated_data["email"],
-            senha=serializer.validated_data["senha"],
-            tipo=serializer.validated_data["tipo"],
-        )
+        try:
+            usuario = Usuario.objects.create(
+                nome=serializer.validated_data["nome"],
+                email=serializer.validated_data["email"],
+                senha=serializer.validated_data["senha"],
+                tipo=serializer.validated_data["tipo"],
+            )
+        except Exception as erro:
+            logger.exception("Erro ao cadastrar usuário")
+
+            return Response(
+                {
+                    "erro": "Erro interno ao cadastrar usuário.",
+                    "detalhe": str(erro),
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         token = gerar_token(usuario)
 
