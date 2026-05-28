@@ -32,7 +32,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "auth_app.middleware.ForceCorsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
 
     "django.middleware.security.SecurityMiddleware",
@@ -100,7 +99,11 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ],
 }
-
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://adocao-projeto.vercel.app",
+]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
